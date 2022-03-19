@@ -46,13 +46,11 @@ class QR_GEN():
 
     def qr_check(self, img):
         # date = self.name_col_check()
-        # ------------
         date = datetime.datetime.now()
         date = date.strftime("%d-%m-%Y")
         if date not in self.df.columns:
             self.df.insert(2, column=date, value="A")
             self.df.to_csv('output.csv', index=False)
-        # ------------
         if decode(img, symbols=[ZBarSymbol.QRCODE]):
             for qr in decode(img, symbols=[ZBarSymbol.QRCODE]):
                 myData = qr.data.decode('utf-8')
