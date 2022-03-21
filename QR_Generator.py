@@ -69,14 +69,72 @@ class QR_GEN():
 
                     self.df.to_csv('output.csv', index=False)
 
+    def point_locator(self, decrypt):
+        top_left = (decrypt[0].rect.left, decrypt[0].rect.top)
+        top_right = (decrypt[0].rect.left + decrypt[0].rect.width, decrypt[0].rect.top)
+        bottom_left = (decrypt[0].rect.left, decrypt[0].rect.top + decrypt[0].rect.height)
+        bottom_right = (decrypt[0].rect.left + decrypt[0].rect.width, decrypt[0].rect.left + decrypt[0].rect.height)
+
+        return top_left, top_right, bottom_left, bottom_right
+
+    def plot(self, img, decrypt, r=5, len=34, th=4, clr=(0, 255, 0)):
+        top_left, top_right, bottom_left, bottom_right = self.point_locator(decrypt)
+
+        cv2.circle(img, top_left, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, top_left, (top_left[0], top_left[1] + len), color=clr, thickness=th)
+        img = cv2.line(img, top_left, (top_left[0] + len, top_left[1]), color=clr, thickness=th)
+
+        cv2.circle(img, top_right, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, top_right, (top_right[0], top_right[1] + len), color=clr, thickness=th)
+        img = cv2.line(img, top_right, (top_right[0] - len, top_right[1]), color=clr, thickness=th)
+
+        cv2.circle(img, bottom_left, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, bottom_left, (bottom_left[0], bottom_left[1] - len), color=clr, thickness=th)
+        img = cv2.line(img, bottom_left, (bottom_left[0] + len, bottom_left[1]), color=clr, thickness=th)
+
+        cv2.circle(img, bottom_right, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, bottom_right, (bottom_right[0], bottom_right[1] - len), color=clr, thickness=th)
+        img = cv2.line(img, bottom_right, (bottom_right[0] - len, bottom_right[1]), color=clr, thickness=th)
+
+        return img
+
+    def plot_polygon(self, img, polygon_cords, r=5, len=34, th=4, clr=(0, 255, 0)):
+        top_left, top_right, bottom_left, bottom_right = polygon_cords[0], polygon_cords[1], polygon_cords[2], \
+                                                         polygon_cords[3]
+
+        cv2.circle(img, top_left, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, top_left, (top_left[0], top_left[1] + len), color=clr, thickness=th)
+        img = cv2.line(img, top_left, (top_left[0] + len, top_left[1]), color=clr, thickness=th)
+
+        cv2.circle(img, top_right, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, top_right, (top_right[0], top_right[1] - len), color=clr, thickness=th)
+        img = cv2.line(img, top_right, (top_right[0] + len, top_right[1]), color=clr, thickness=th)
+
+        cv2.circle(img, bottom_left, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, bottom_left, (bottom_left[0], bottom_left[1] - len), color=clr, thickness=th)
+        img = cv2.line(img, bottom_left, (bottom_left[0] - len, bottom_left[1]), color=clr, thickness=th)
+
+        cv2.circle(img, bottom_right, radius=r, color=clr, thickness=-1)
+        img = cv2.line(img, bottom_right, (bottom_right[0], bottom_right[1] + len), color=clr, thickness=th)
+        img = cv2.line(img, bottom_right, (bottom_right[0] - len, bottom_right[1]), color=clr, thickness=th)
+
+        return img
+
 def main():
     gen = QR_GEN("names.csv")
     url = "http://192.168.0.110:8080/video"
+    # url = "http://192.168.43.22:8080/video"
+
     cap = cv2.VideoCapture(url)
     while True:
         res, img = cap.read()
         img = cv2.resize(img, (640, 480))
         gen.qr_check(img)
+
+        decrypt = decode(img, symbols=[ZBarSymbol.QRCODE])
+        if decrypt:
+            polygon_cords = decrypt[0].polygon
+            img = gen.plot_polygon(img, polygon_cords)
 
         cv2.imshow("Webcam", img)
         if cv2.waitKey(1) & 0xFF == ord("q"):
