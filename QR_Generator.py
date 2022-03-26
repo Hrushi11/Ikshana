@@ -122,8 +122,9 @@ class QR_GEN():
 
 def main():
     gen = QR_GEN("names.csv")
-    url = "http://192.168.0.110:8080/video"
+    # url = "http://192.168.0.110:8080/video"
     # url = "http://192.168.43.22:8080/video"
+    url = "http://192.168.125.199:8080/video"
 
     cap = cv2.VideoCapture(url)
     while True:
