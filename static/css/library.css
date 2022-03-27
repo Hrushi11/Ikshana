@@ -149,3 +149,48 @@ footer {
 footer p {
   cursor: context-menu;
 }
+
+/* Media Queries */
+@media only screen and (max-width: 480px) {
+  .AIVS {
+    padding-top: 0px;
+  }
+
+  .AIVS h2 {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    /* margin-left: 500px;
+		  margin-right: 500px; */
+    margin-left: 20vw;
+    margin-right: 20vw;
+    padding-bottom: 15px;
+
+    border-bottom: 5px solid rgb(237, 247, 247);
+  }
+
+  .about-para {
+    font-size: 21px;
+  }
+
+  .system {
+    padding-top: 0px;
+    margin-top: 25px;
+    /* padding-left: 140px; */
+    margin-left: 11vw;
+    margin-right: 8vw;
+    width: 75vw;
+    height: 55vh; /* 650px; */
+  }
+
+  /* Footer */
+  .footer-nav {
+    display: none;
+  }
+
+  .social-links {
+    width: 100%;
+    text-align: center;
+  }
+}
