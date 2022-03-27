@@ -4,8 +4,8 @@ import qrcode
 import datetime
 import pandas as pd
 from records import records
-from pyzbar.pyzbar import ZBarSymbol
 from pyzbar.pyzbar import decode
+from pyzbar.pyzbar import ZBarSymbol
 
 class QR_GEN():
     def __init__(self, names_csv):
@@ -44,13 +44,13 @@ class QR_GEN():
 
         return date
 
-    def qr_check(self, img):
+    def qr_check_attendance(self, img):
         # date = self.name_col_check()
         date = datetime.datetime.now()
         date = date.strftime("%d-%m-%Y")
         if date not in self.df.columns:
             self.df.insert(2, column=date, value="A")
-            self.df.to_csv('output.csv', index=False)
+            self.df.to_csv('attendance.csv', index=False)
         if decode(img, symbols=[ZBarSymbol.QRCODE]):
             for qr in decode(img, symbols=[ZBarSymbol.QRCODE]):
                 myData = qr.data.decode('utf-8')
@@ -61,13 +61,39 @@ class QR_GEN():
                     print(f"Good morning, Your attendance has been marked {scanedname}")
                     # df = pd.read_csv('output.csv')
 
-                    self.df = pd.read_csv('output.csv')
+                    self.df = pd.read_csv('attendance.csv')
 
                     pos = self.df[self.df['Name'] == scanedname].index.values
                     self.df.loc[pos[0], date] = "P"
                     # print(self.df.loc[pos[0], date])
 
-                    self.df.to_csv('output.csv', index=False)
+                    self.df.to_csv('attendance.csv', index=False)
+
+    def qr_check_mid_day_meal(self, img):
+        # date = self.name_col_check()
+        date = datetime.datetime.now()
+        date = date.strftime("%d-%m-%Y")
+        if date not in self.df.columns:
+            self.df.insert(2, column=date, value="A")
+            self.df.to_csv('mid-day-meal.csv', index=False)
+        if decode(img, symbols=[ZBarSymbol.QRCODE]):
+            for qr in decode(img, symbols=[ZBarSymbol.QRCODE]):
+                myData = qr.data.decode('utf-8')
+
+                scanedname, scanedroll = myData.split(" ")
+
+                if myData in records:  # Check if the student is actually listed in records
+                    print(f"Hello, Your meal will been served {scanedname}")
+                    # df = pd.read_csv('output.csv')
+
+                    self.df = pd.read_csv('mid-day-meal.csv')
+
+                    pos = self.df[self.df['Name'] == scanedname].index.values
+                    self.df.loc[pos[0], date] = "P"
+                    # print(self.df.loc[pos[0], date])
+
+                    self.df.to_csv('mid-day-meal.csv', index=False)
+
 
     def point_locator(self, decrypt):
         top_left = (decrypt[0].rect.left, decrypt[0].rect.top)
@@ -122,15 +148,15 @@ class QR_GEN():
 
 def main():
     gen = QR_GEN("names.csv")
-    # url = "http://192.168.0.110:8080/video"
+    url = "http://192.168.0.110:8080/video"
     # url = "http://192.168.43.22:8080/video"
-    url = "http://192.168.125.199:8080/video"
+    # url = "http://192.168.125.199:8080/video"
 
     cap = cv2.VideoCapture(url)
     while True:
         res, img = cap.read()
         img = cv2.resize(img, (640, 480))
-        gen.qr_check(img)
+        gen.qr_check_mid_day_meal(img)
 
         decrypt = decode(img, symbols=[ZBarSymbol.QRCODE])
         if decrypt:

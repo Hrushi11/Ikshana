@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Auxilium</title>
+    <title>Ikshana</title>
     <link
       href="https://fonts.googleapis.com/css?family=Heebo:400,400i,500,700|Titillium+Web:600"
       rel="stylesheet"
@@ -21,6 +21,11 @@
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
     ></script>
     <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
   </head>
   <body class="is-boxed">
     <div class="body-wrap boxed-container">
@@ -119,7 +124,7 @@
                   <div class="control">
                     <a
                       class="button button-primary button-block"
-                      href="#"
+                      href="#Objective"
                       target="blank"
                       >Know more</a
                     >
@@ -957,7 +962,7 @@
         </section>
       </main>
 
-      <section class="About-section">
+      <section class="About-section" id="Obejective">
         <div><h2>Objective</h2></div>
         <div class="about-div">
           <p class="about-para">
@@ -978,8 +983,13 @@ authorized person scans these QR codes and automatically the data is updated in 
       <!-- QR Scan -->
       <section class="AIVS">
         <div><h2 class="aivs">Scan </h2></div>
-        <div class="vid-block">
+        <!-- <div class="vid-block">
           <img src="{{ url_for('video_feed') }}" class="system" />
+        </div> -->
+        <div class="btn">
+        <a href=attendance ><button type="button" class="att-btn" onclick="location.href = 'attendance.html';">Attendance</button></a>
+        <a href=mid-day-meal ><button type="button" class="att-btn-mid" onclick="location.href = 'mid-day-meal.html';">Mid day meal</button></a>
+        <a href=library ><button type="button" class="att-btn-library" onclick="location.href = 'library.html';">Library</button></a>
         </div>
       </section>
 
