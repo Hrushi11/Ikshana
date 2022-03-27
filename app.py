@@ -1,8 +1,10 @@
 import cv2
+import csv
 import time
 import numpy as np
+import pandas as pd
 from QR_Generator import QR_GEN, decode, ZBarSymbol
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 
 app = Flask(__name__)
 
@@ -117,6 +119,30 @@ def midDayMeal():
 @app.route('/library')
 def library():
 	return render_template('library.html')
+
+@app.route('/data_attendance', methods=['GET', 'POST'])
+def data_attendance():
+	f = "attendance.csv"
+	data = []
+	with open(f) as file:
+		csvfile = csv.reader(file)
+		for row in csvfile:
+			data.append(row)
+
+	data = pd.DataFrame(data)
+	return render_template('data.html', data=data.to_html(classes='mystyle', header=False, index=False))
+
+@app.route('/data_mid_day_meal', methods=['GET', 'POST'])
+def data_mid_day_meal():
+	f = "mid-day-meal.csv"
+	data = []
+	with open(f) as file:
+		csvfile = csv.reader(file)
+		for row in csvfile:
+			data.append(row)
+
+	data = pd.DataFrame(data)
+	return render_template('data.html', data=data.to_html(classes='mystyle', header=False, index=False))
 
 @app.route('/video_feed_attendance')
 def video_feed():
