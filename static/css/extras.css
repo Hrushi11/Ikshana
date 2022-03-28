@@ -427,6 +427,7 @@ footer p {
   .att-btn {
     margin-right: 0;
     height: 12vh;
+    font-size: 28px;
   }
 
   .att-btn:hover {
@@ -437,11 +438,32 @@ footer p {
     transform: scale(1.1);
   }
 
+  .btn-csv {
+    display: grid;
+    justify-content: center;
+  }
+
+  .att-btn-csv {
+    font-size: 25px;
+    margin-right: 0;
+  }
+
+  .att-btn-library-csv {
+    font-size: 25px;
+    margin-left: 0;
+  }
+
+  .att-btn-mid-csv {
+    font-size: 25px;
+  }
+
   .att-btn-mid {
     height: 12vh;
+    font-size: 28px;
   }
   .att-btn-library {
     height: 12vh;
     margin-left: 0;
+    font-size: 28px;
   }
 }
